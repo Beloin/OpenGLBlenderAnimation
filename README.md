@@ -6,6 +6,13 @@
 
 This repository is a template OpenGL project configured using CMake. It supports cross-platform builds, and provides a good starting point to begin OpenGL development.
 
+# About the project
+
+OpenGL Animation implemented with C++, following [this](https://www.youtube.com/watch?v=GZQkwx10p-8) tutorial.
+
+
+
+
 ## Usage
 
 The intended usage for this repository is to be a template for future Github repositories. See [this](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) guide for more information.
@@ -78,3 +85,9 @@ include(${CMAKE_DIR}/<Linking Script>.cmake)
 ```
 
 Where `<Linking Script>` is the name of the CMake script and linking macro, `<Target>` is the build target to link against, and `<Access>` is the access specifier for the linkage / header inclusion.
+
+# Knowledge
+
+## AOS x SOA
+
+![img.png](resources/aosxsoa.png)

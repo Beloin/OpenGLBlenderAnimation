@@ -9,6 +9,7 @@ project(OpenGLTemplate CXX)
 # See: https://github.com/Hoshiningen/OpenGL-Template/issues
 
 set(ENABLE_ASSIMP   ON CACHE BOOL "Add Open Asset Import Library (assimp) to the project" FORCE)
+set(ENABLE_STB   ON CACHE BOOL "Add STB Library (stb) to the project" FORCE)
 
 #===========================================================================================
 # GLAD CONFIGURATION
@@ -36,7 +37,15 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-set(sources ${SOURCE_DIR}/main.cpp)
+set(sources
+    ${SOURCE_DIR}/main.cpp 
+    ${SOURCE_DIR}/model/ModelLoader.cpp ${SOURCE_DIR}/model/ModelLoader.h
+    ${SOURCE_DIR}/engine/math_3d.h ${SOURCE_DIR}/srcutils.h ${SOURCE_DIR}/srctypes.h
+    ${SOURCE_DIR}/engine/world_transform.h ${SOURCE_DIR}/engine/world_transform.cpp
+
+        source/engine/Texture.cpp source/engine/Texture.h)
+
+include_directories(sources source)
 
 add_executable(opengl-template ${sources} ${includes})
 
@@ -49,17 +58,23 @@ LinkGLAD(opengl-template PRIVATE)
 
 find_package(OpenGL REQUIRED)
 if (OpenGL_FOUND)
-    target_include_directories(opengl-template PRIVATE ${OPENGL_INCLDUE_DIRS})
-    target_link_libraries(opengl-template PRIVATE ${OPENGL_LIBRARIES})
+  target_include_directories(opengl-template PRIVATE ${OPENGL_INCLDUE_DIRS})
+  target_link_libraries(opengl-template PRIVATE ${OPENGL_LIBRARIES})
 else()
-    message(FATAL_ERROR "OpenGL was not found on the system")
+  message(FATAL_ERROR "OpenGL was not found on the system")
 endif()
 
 # Handle the optional libraries
 if (${ENABLE_ASSIMP})
-    include(${CMAKE_DIR}/LinkASSIMP.cmake)
-    LinkASSIMP(opengl-template PRIVATE)
+  include(${CMAKE_DIR}/LinkASSIMP.cmake)
+  LinkASSIMP(opengl-template PRIVATE)
 endif()
+
+if (${ENABLE_STB})
+  include(${CMAKE_DIR}/LinkSTB.cmake)
+  LinkSTB(opengl-template PRIVATE)
+endif()
+
 
 # Enable C++17
 set_target_properties(opengl-template PROPERTIES
